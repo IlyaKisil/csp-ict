@@ -1,0 +1,70 @@
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# This makes it easier to see which terminal you are using in jupyter lab
+DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+HIST_STAMPS="yyyy-mm-dd"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  tmux
+)
+
+source $HOME/.zshrc-local
+
+### Set PATH
+# Include user's private bin
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+
+# The following HOME directories should be correctly
+# defined in the ~/.zshrc-local, which should be sourced beforehand.
+export PATH=$ANACONDA_HOME:$PATH
+export PATH=$CSP_MANDIC_SCRIPTS_HOME:$PATH
+
+# Configurations for nodejs version manager (nvm)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+export BROWSER="google-chrome"
+
+################################################
+### Common aliases across all configurations ###
+################################################
+
+### GENERAL ###
+alias clc='clear'
+alias add='git add --all;git status'
+alias gh='cd ~/GitHub'
+alias gl='cd ~/GitLab'
+
+### PYTHON ###
+alias sa='source activate'
+alias sd='source deactivate'
+alias jn='jupyter notebook'
+alias jl='jupyter lab'
+
+
+
+# Source main file (Must have)
+source $ZSH/oh-my-zsh.sh
+
+# Activate default venv
+source activate py36
