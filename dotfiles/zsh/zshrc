@@ -1,3 +1,5 @@
+#@IgnoreInspection BashAddShebang
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -25,6 +27,12 @@ plugins=(
   tmux
 )
 
+### Set some custom environmental variables for user convenience.
+export DATASETS_HDD="/hdd/datasets"
+export DATASETS_SSD="/home/datasets-ssd"
+export CSP_ICT_HOME="/hdd/csp-ict"
+
+### Source user specific information
 source $HOME/.zshrc-local
 
 ### Set PATH

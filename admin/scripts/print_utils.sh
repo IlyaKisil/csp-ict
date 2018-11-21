@@ -29,15 +29,18 @@ function yellow(){
 }
 
 function INFO(){
+    FILE_NAME=$1
     echo -e "`green "\nINFO: ${FILE_NAME}"`\n==>"
 }
 
 function WARNING(){
+    FILE_NAME=$1
     echo -e "`yellow "\nWARNING: ${FILE_NAME}"`\n==>"
 }
 
 function ERROR(){
-    echo -e "`red "\nERROR: ${FILE_NAME}:"`\n==>"
+    FILE_NAME=$1
+    echo -e "`red "\nERROR: ${FILE_NAME}"`\n==>"
 }
 
 function error_exit(){
