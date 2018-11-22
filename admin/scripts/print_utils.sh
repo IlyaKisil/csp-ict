@@ -29,16 +29,19 @@ function yellow(){
 }
 
 function INFO(){
+    local FILE_NAME
     FILE_NAME=$1
     echo -e "`green "\nINFO: ${FILE_NAME}"`\n==>"
 }
 
 function WARNING(){
+    local FILE_NAME
     FILE_NAME=$1
     echo -e "`yellow "\nWARNING: ${FILE_NAME}"`\n==>"
 }
 
 function ERROR(){
+    local FILE_NAME
     FILE_NAME=$1
     echo -e "`red "\nERROR: ${FILE_NAME}"`\n==>"
 }

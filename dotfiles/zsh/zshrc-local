@@ -5,7 +5,7 @@
 #####################################################
 
 ### Set env variables for the .zshrc
-ZSH_CUSTOM=__CONFIG_HOME__/dotfiles/zsh/custom
+#ZSH_CUSTOM=__CONFIG_HOME__/dotfiles/zsh/custom
 ZSH_THEME="agnoster"
 
 #CSP_MANDIC_SCRIPTS_HOME=__CONFIG_HOME__/scripts
