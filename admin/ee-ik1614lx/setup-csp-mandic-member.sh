@@ -3,11 +3,11 @@
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
-SSH_USER=""
-HOST_NAME=`hostname -f`
 
 source /hdd/csp-ict/admin/ee-ik1614lx/_variables.sh
-source $CSP_ICT_HOME/admin/scripts/print_utils.sh
+
+SSH_USER=""
+HOST_NAME=`hostname -f`
 
 
 
@@ -19,15 +19,18 @@ else
     SSH_USER="${USER}"
 fi
 
+
+
 GETENTPASSWD="$(getent passwd ${SSH_USER})"
 if [ $? -ne 0 ]; then
     echo "`ERROR $_FILE_NAME` Could not 'getent' for [${SSH_USER}], exiting"
     error_exit
 fi
-
 SSH_USER_UID="$(echo ${GETENTPASSWD} | awk -F: '{ print $3 }')"
 SSH_USER_GID="$(echo ${GETENTPASSWD} | awk -F: '{ print $4 }')"
 SSH_USER_HOME="$(echo ${GETENTPASSWD} | awk -F: '{ print $6 }')"
+
+
 
 if grep -q "${SSH_USER}:[x*]:${SSH_USER_UID}:${SSH_USER_GID}:" /etc/passwd; then
     echo "`INFO $_FILE_NAME` Greetings [$SSH_USER] `green ":-)"`"
@@ -47,7 +50,9 @@ if [ "${SSH_USER}" == "ik1614" ]; then
 fi
 
 
-
+#########################################################
+###--------        Begin configuration        --------###
+#########################################################
 echo "`INFO $_FILE_NAME` Starting initial configuration for [${SSH_USER}]"
 
 if [ ! -d ${SSH_USER_HOME} ]; then
@@ -59,7 +64,7 @@ if [ -e ${SSH_USER_HOME}/.initial-csp-config.done ]; then
     echo "`INFO $_FILE_NAME` Found ${SSH_USER_HOME}/.initial-csp-config.done. Initial configuration is not required."
 
     # Check that user have setup ssh-key after the first login
-    if [[ -s diff.txt ]]; then
+    if grep -q "ssh-.*== ${SSH_USER}@" ${SSH_USER_HOME}/.ssh/authorized_keys; then
         echo "`INFO $_FILE_NAME` Found ssh-key in (${SSH_USER_HOME}/.ssh/authorized_keys is not empty).";
     else
         echo "`WARNING $_FILE_NAME` Password authentication will be disabled soon but ssh-key has not been setup.";
@@ -68,10 +73,8 @@ if [ -e ${SSH_USER_HOME}/.initial-csp-config.done ]; then
         echo ""
         echo "cat ~/.ssh/id_rsa.pub | ssh ${SSH_USER}@${HOST_NAME} 'cat >> .ssh/authorized_keys && echo \"Key has been copied successfully\"' "
         echo ""
-#        printf "Enter [y] to proceed: "
-#        answer=$( while ! head -c 1 | grep -i '[y]' ;do true ;done )
-        # exit 0;
         return 0
+#        error_exit
     fi
     return 0
 fi
@@ -79,6 +82,7 @@ fi
 source $EE_IK1614LX_SETUP_HOME/setup-dotfiles.sh $SSH_USER
 source $EE_IK1614LX_SETUP_HOME/setup-nodejs.sh $SSH_USER
 source $EE_IK1614LX_SETUP_HOME/setup-miniconda.sh $SSH_USER
+source $EE_IK1614LX_SETUP_HOME/setup-labextensions.sh $SSH_USER
 
 touch ${SSH_USER_HOME}/.initial-csp-config.done
 echo "`INFO $_FILE_NAME` Initial configuration for CSP-Mandic member is complete"

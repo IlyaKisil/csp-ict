@@ -1,4 +1,4 @@
 python==3.6.5
 pip==18.1
 ipykernel
-jupyterlab
+jupyterlab=0.35

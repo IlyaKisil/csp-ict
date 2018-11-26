@@ -2,7 +2,6 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
-local _FILE_NAME
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
 
@@ -17,6 +16,10 @@ echo "`INFO $_FILE_NAME` Configuring local installation of nodejs in [${NVM_INST
 
 
 echo "`INFO $_FILE_NAME` Installing NodeJS Version Manager (NVM)"
+
+if [[ ! -d $NVM_INSTALL_HOME/ ]]; then
+    mkdir $NVM_INSTALL_HOME
+fi
 env NVM_DIR="${NVM_INSTALL_HOME}" PROFILE="/dev/null" bash $CSP_ICT_HOME/software/nvm/install.sh
 
 

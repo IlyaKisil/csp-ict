@@ -32,7 +32,6 @@ echo "====================================================="
 
 USER_NAME=$1
 
-local _FILE_NAME
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 DATE=`date '+%Y-%m-%d'`
 TIME=`date '+%H-%M-%S'`
@@ -47,9 +46,9 @@ declare -a CONFIG_FILES=(".gitconfig"
                          ".gitignore-global"
                          ".zshrc"
                          ".zshrc-local"
+                         ".config/zsh"
                          ".tmux.conf"
                          ".tmux-local.conf"
-                         ".config/zsh"
                          )
 
 AUTO=0
