@@ -5,11 +5,10 @@
 #####################################################
 
 ### Set env variables for the .zshrc
-#ZSH_CUSTOM=__CONFIG_HOME__/dotfiles/zsh/custom
+ZSH_CUSTOM=$HOME/.config/zsh
 ZSH_THEME="agnoster"
 
-#CSP_MANDIC_SCRIPTS_HOME=__CONFIG_HOME__/scripts
-
+### Set other env variables
 ANACONDA_HOME=$HOME/Miniconda3/bin
 
 

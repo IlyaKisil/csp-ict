@@ -6,7 +6,9 @@ local _FILE_NAME
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
 
-USER_HOME=$1
+USER_NAME=$1
+USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
+
 NVM_INSTALL_HOME="${USER_HOME}/.nvm"
 NODEJS_VERSION=`cat "${EE_IK1614LX_SETUP_HOME}/default_nodejs_version.txt"`
 

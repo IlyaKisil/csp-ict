@@ -6,8 +6,12 @@ local _FILE_NAME
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
 
-USER_HOME=$1
+USER_NAME=$1
+USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
+
 ANACONDA_INSTALL_HOME="${USER_HOME}/Miniconda3"
+DEFAULT_VENV_NAME="py36"
+DEFAULT_VENT_REQUIREMENTS="${EE_IK1614LX_SETUP_HOME}/default_venv_requirements.txt"
 
 echo "`INFO $_FILE_NAME` Configuring local installation of miniconda in [${ANACONDA_INSTALL_HOME}]."
 
@@ -18,8 +22,8 @@ ${ANACONDA_INSTALL_HOME}/bin/conda update conda \
                                           --yes \
                                           --quiet
 
-${ANACONDA_INSTALL_HOME}/bin/conda create --name "py36" \
-                                          --file /etc/csp/anaconda/default_requirements.txt \
+${ANACONDA_INSTALL_HOME}/bin/conda create --name $DEFAULT_VENV_NAME \
+                                          --file $DEFAULT_VENT_REQUIREMENTS \
                                           --yes \
                                           --quiet
 

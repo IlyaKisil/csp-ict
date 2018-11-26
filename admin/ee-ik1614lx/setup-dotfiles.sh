@@ -43,13 +43,13 @@ BACKUP_HOME="${USER_HOME}/.config_bak"
 BACKUP_DIR="${BACKUP_HOME}/csp_dotfiles_${DATE}_${TIME}"
 
 OS=`uname`
-COPY="cp -r"
 declare -a CONFIG_FILES=(".gitconfig"
                          ".gitignore-global"
                          ".zshrc"
                          ".zshrc-local"
                          ".tmux.conf"
                          ".tmux-local.conf"
+                         ".config/zsh"
                          )
 
 AUTO=0
@@ -127,7 +127,7 @@ clean_config(){
         if [[ -f $config_file ]]; then
             rm $config_file
         elif [[ -d $config_file ]]; then
-            rm $config_file
+            rm -r $config_file
         elif [[ -L $config_file ]]; then
             rm $config_file
         fi
@@ -138,7 +138,7 @@ git_bootstrap(){
     printf "\n`INFO $_FILE_NAME` Bootstrap of `green "GIT"` config files.\n"
 
     printf "\t 1) Creating `green ".gitconfig"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/git/gitconfig $USER_HOME/.gitconfig
+    cp $CSP_ICT_HOME/dotfiles/git/gitconfig $USER_HOME/.gitconfig
 
     # Set user name
     sed -i "s|__USER_NAME__|$USER_NAME|g" $USER_HOME/.gitconfig
@@ -147,17 +147,17 @@ git_bootstrap(){
     sed -i "s|__USER_EMAIL__|$USER_EMAIL|g" $USER_HOME/.gitconfig
 
     printf "\t 2) Creating `green ".gitignore-global"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/git/gitignore-global $USER_HOME/.gitignore-global
+    cp $CSP_ICT_HOME/dotfiles/git/gitignore-global $USER_HOME/.gitignore-global
 }
 
 tmux_bootstrap(){
     printf "\n`INFO $_FILE_NAME` Bootstrap of `green "TMUX"` config files.\n"
 
     printf "\t 1) Creating `green ".tmux.conf"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/tmux/tmux.conf $USER_HOME/.tmux.conf
+    cp $CSP_ICT_HOME/dotfiles/tmux/tmux.conf $USER_HOME/.tmux.conf
 
     printf "\t 2) Creating local configuration for tmux in `green ".tmux-local.conf"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/tmux/tmux-local.conf $USER_HOME/.tmux-local.conf
+    cp $CSP_ICT_HOME/dotfiles/tmux/tmux-local.conf $USER_HOME/.tmux-local.conf
 
     printf "\t 3) Cloning `green "Tmux plugin manager"`\n"
     if [[ -d $USER_HOME/.tmux/plugins/tpm/ ]]; then
@@ -179,14 +179,13 @@ zsh_bootstrap(){
     fi
 
     printf "\t 2) Creating `green ".zshrc"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/zsh/zshrc $USER_HOME/.zshrc
+    cp $CSP_ICT_HOME/dotfiles/zsh/zshrc $USER_HOME/.zshrc
 
     printf "\t 3) Creating local configuration for the zsh in `green ".zshrc-local"`\n"
-    $COPY $CSP_ICT_HOME/dotfiles/zsh/zshrc-local $USER_HOME/.zshrc-local
+    cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local $USER_HOME/.zshrc-local
 
-    printf "\t 4) Configuring local paths for the `green ".zshrc-local"`\n"
-    # Use different separator, since $CSP_ICT_HOME contains '/' symbol:
-    sed -i "s|__CONFIG_HOME__|$CSP_ICT_HOME|g" $USER_HOME/.zshrc-local
+    printf "\t 4) Copying custom theme and plugins for oh-my-zsh in `green "~/.config/zsh/"`\n"
+    cp -r $CSP_ICT_HOME/dotfiles/zsh/custom $USER_HOME/.config/zsh/
 }
 
 

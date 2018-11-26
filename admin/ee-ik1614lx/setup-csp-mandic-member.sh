@@ -77,8 +77,8 @@ if [ -e ${SSH_USER_HOME}/.initial-csp-config.done ]; then
 fi
 
 source $EE_IK1614LX_SETUP_HOME/setup-dotfiles.sh $SSH_USER
-source $EE_IK1614LX_SETUP_HOME/setup-nodejs.sh $SSH_USER_HOME
-source $EE_IK1614LX_SETUP_HOME/setup-miniconda.sh $SSH_USER_HOME
+source $EE_IK1614LX_SETUP_HOME/setup-nodejs.sh $SSH_USER
+source $EE_IK1614LX_SETUP_HOME/setup-miniconda.sh $SSH_USER
 
 touch ${SSH_USER_HOME}/.initial-csp-config.done
 echo "`INFO $_FILE_NAME` Initial configuration for CSP-Mandic member is complete"
