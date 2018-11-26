@@ -8,9 +8,15 @@
 ZSH_CUSTOM=$HOME/.config/zsh
 ZSH_THEME="agnoster"
 
+
+### Set env variables related to CUDA
+CUDA_HOME=/usr/local/cuda-10.0/bin
+CUDA_LIB64_HOME=/usr/local/cuda/lib64
+CUDA_CUPTI_LIB64_HOME=/usr/local/cuda/extras/CUPTI/lib64
+
+
 ### Set other env variables
 ANACONDA_HOME=$HOME/Miniconda3/bin
-
 
 #######################################
 #########       ALIASES       #########

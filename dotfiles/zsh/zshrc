@@ -32,6 +32,13 @@ export DATASETS_HDD="/hdd/datasets"
 export DATASETS_SSD="/home/datasets-ssd"
 export CSP_ICT_HOME="/hdd/csp-ict"
 
+# Configurations for nodejs version manager (nvm)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+
 ### Source user specific information
 source $HOME/.zshrc-local
 
@@ -43,12 +50,10 @@ export PATH=$HOME/.local/bin:$PATH
 # The following HOME directories should be correctly
 # defined in the ~/.zshrc-local, which should be sourced beforehand.
 export PATH=$ANACONDA_HOME:$PATH
-export PATH=$CSP_MANDIC_SCRIPTS_HOME:$PATH
+export PATH=$CUDA_HOME:$PATH
 
-# Configurations for nodejs version manager (nvm)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_LIB64_HOME
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_CUPTI_LIB64_HOME
 
 
 export BROWSER="google-chrome"
@@ -66,8 +71,8 @@ alias gl='cd ~/GitLab'
 ### PYTHON ###
 alias sa='source activate'
 alias sd='source deactivate'
-alias jn='jupyter notebook'
-alias jl='jupyter lab'
+alias jn='jupyter notebook --no-browser'
+alias jl='jupyter lab --no-browser'
 
 
 
