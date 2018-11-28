@@ -57,7 +57,7 @@ SSH_USER_UID="$(echo ${GETENTPASSWD} | awk -F: '{ print $3 }')"
 SSH_USER_GID="$(echo ${GETENTPASSWD} | awk -F: '{ print $4 }')"
 SSH_USER_HOME="$(echo ${GETENTPASSWD} | awk -F: '{ print $6 }')"
 
-if [ "${SSH_USER}" == "ik1614" ] && [ "${SSH_USER_UID}" != "698242" ]; then
+if [ "${SSH_USER}" == "ik1614" ] && [ "${SSH_USER_UID}" == "698242" ]; then
     # Don't do anything, since this user is competent enough
     # to manage and maintain configuration on his own.
     echo "`INFO $__FILE_NAME__` Welcome back, your majesty."
@@ -70,7 +70,7 @@ fi
 if grep -q "${SSH_USER}:[x*]:${SSH_USER_UID}:${SSH_USER_GID}:.*:/hdd/csp-mandic/${SSH_USER}:" /etc/passwd; then
     echo "`INFO $__FILE_NAME__` Greetings [$SSH_USER] `green ":-)"`"
 else
-    echo "`ERROR $__FILE_NAME__` Home directory [${SSH_USER}] is specified by LDAP. It needs to be overridden locally"
+    echo "`ERROR $__FILE_NAME__` Home directory [${SSH_USER}] is specified by LDAP. It needs to be overridden locally."
     error_exit
 fi
 

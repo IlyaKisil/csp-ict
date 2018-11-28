@@ -1,0 +1,9 @@
+#@IgnoreInspection BashAddShebang
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+exec /usr/bin/zsh

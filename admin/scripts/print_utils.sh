@@ -47,7 +47,7 @@ function ERROR(){
 }
 
 function error_exit(){
-    printf "Access denied. Contact CSP-ICT administrator."
+    echo -e "`red "Access denied."` Contact CSP-ICT administrator."
     printf "Enter [y] to exit: "
     answer=$( while ! head -c 1 | grep -i '[y]' ;do true ;done )
     exit 0
