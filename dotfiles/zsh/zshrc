@@ -72,12 +72,9 @@ alias gl='cd ~/GitLab'
 alias sa='source activate'
 alias sd='source deactivate'
 alias jn='jupyter notebook --no-browser'
-alias jl='jupyter lab --no-browser'
+alias jl='start_jupyter.sh'
 
 
 
 # Source main file (Must have)
 source $ZSH/oh-my-zsh.sh
-
-# Activate default venv
-source activate py36

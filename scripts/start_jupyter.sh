@@ -41,4 +41,4 @@ done
 
 printf "Starting Jupyter Lab for remote use\n"
 # Locally define $SHELL, so that terminals opened in JupyterLab would use zsh
-env SHELL=`which zsh` jupyter lab --no-browser --port="${port}"
+env SHELL="`which zsh`" jupyter lab --no-browser --port="${port}"
