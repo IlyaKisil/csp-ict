@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script is called at the user login by /etc/profile.d/setup-csp-mandic-member.sh
+
+
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
 
@@ -35,6 +38,7 @@ function full_setup() {
     source $EE_IK1614LX_SETUP_HOME/setup-nodejs.sh $SSH_USER
     source $EE_IK1614LX_SETUP_HOME/setup-miniconda.sh $SSH_USER
     source $EE_IK1614LX_SETUP_HOME/setup-labextensions.sh $SSH_USER
+    source $EE_IK1614LX_SETUP_HOME/setup-user-bin.sh $SSH_USER
 
     touch ${SSH_USER_HOME}/${__SETUP_SUCCESS__}
 
@@ -82,7 +86,7 @@ fi
 
 
 ###--- Check if initial configuration has been performed otherwise perform it ---###
-if [ -e ${SSH_USER_HOME}/.initial-csp-config.done ]; then
+if [ -e ${SSH_USER_HOME}/${__SETUP_SUCCESS__} ]; then
     echo "`INFO $__FILE_NAME__` Initial configuration is not required. Found [${SSH_USER_HOME}/`green ${__SETUP_SUCCESS__}`]."
 
     # Check that user have setup ssh-key after the first login
