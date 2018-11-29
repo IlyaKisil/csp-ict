@@ -25,19 +25,19 @@ fi
 
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 
+# Need to specify path to jupyter executable since at setup time it defaults to system-wide location
+JUPYTER_EXEC="${USER_HOME}/Miniconda3/bin/jupyter"
 
-ANACONDA_INSTALL_HOME="${USER_HOME}/Miniconda3"
-DEFAULT_VENV_NAME=`cat "${EE_IK1614LX_SETUP_HOME}/default_venv_name.txt"`
-DEFAULT_VENT_REQUIREMENTS="${EE_IK1614LX_SETUP_HOME}/default_venv_requirements.txt"
-
+# Double check that the extensions will be installed in the USER's home directory
+BASE_KERNEL_HOME=`$JUPYTER_EXEC kernelspec list`
+if [[ ! $BASE_KERNEL_HOME == *"${USER_HOME}"* ]]; then
+    error_exit
+fi
 
 echo "`INFO $_FILE_NAME` Configuring jupyterlab extensions for default virtual environment."
-
-source ${ANACONDA_INSTALL_HOME}/bin/activate $DEFAULT_VENV_NAME
-jupyter labextension install @jupyterlab/toc --no-build
-jupyter labextension install @jupyter-widgets/jupyterlab-manager@0.38 --no-build
-jupyter labextension install @jupyterlab/plotly-extension@0.17 --no-build
-jupyter lab clean
-jupyter lab build
-
-source ${ANACONDA_INSTALL_HOME}/bin/deactivate
+$JUPYTER_EXEC labextension install @jupyterlab/toc --no-build
+$JUPYTER_EXEC labextension install @jupyter-widgets/jupyterlab-manager@0.38 --no-build
+$JUPYTER_EXEC labextension install @jupyterlab/plotly-extension@0.17 --no-build
+$JUPYTER_EXEC lab clean
+$JUPYTER_EXEC lab build
+$JUPYTER_EXEC labextension list
