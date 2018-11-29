@@ -8,7 +8,7 @@
 set -e
 
 ###--- Source convenience variables and utility functions ---###
-source /hdd/csp-ict/admin/ee-ik1614lx/variables.sh
+source /hdd/csp-ict/ee-ik1614lx/variables.sh
 
 
 ###--- Define variables ---###

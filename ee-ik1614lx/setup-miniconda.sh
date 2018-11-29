@@ -23,7 +23,7 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
-if [ -z $EE_IK1614LX_SETUP_HOME || -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_SETUP_HOME ] || [ -z $CSP_ICT_HOME ]; then
     echo "`ERROR $_FILE_NAME` Missing some required variables."
     error_exit
 fi
