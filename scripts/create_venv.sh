@@ -1,14 +1,88 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Author: Ilya Kisil <ilyakisil@gmail.com>
+set -e
+
+function help() {
+
+local _FILE_NAME
+_FILE_NAME=`basename $0`
+
+echo "*****************************************************"
+cat << HELP_USAGE
+USAGE: $_FILE_NAME [-h|--help] [-n=|--name=<venv_name>] [-p=|--python=<version>]
+
+This script creates virtual environment and associated
+ipykernel with Miniconda.
+
+TYPICAL USE:
+    $_FILE_NAME -n=my_venv_name
+    $_FILE_NAME -n=my_venv_name -p=3.6
+    $_FILE_NAME --name=my_venv_name
+    $_FILE_NAME --name=my_venv_name --python=3.5
+
+BASIC OPTIONS:
+    -h|--help
+        Show this message.
+
+    -n=|--name=<venv_name>
+        Name for the virtual environment and ipykernel.
+
+    -p=|--python=<version>
+        Version of python interpreter. Default is '3.6.5'.
 
 
-VENV_NAME="$1"
+By Ilya Kisil <ilyakisil@gmail.com>
+HELP_USAGE
+echo "*****************************************************"
+}
 
-conda create --name ${VENV_NAME} python=3.6.5
 
-source activate $VENV_NAME
+# Default value for variables
+python_version="3.6.5"
+venv_name=""
 
-python -m ipykernel install --user --name ${$VENV_NAME} --display-name ${$VENV_NAME}
 
-source deactivate $VENV_NAME
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            help
+            exit
+            ;;
+        -n=*|--name=*)
+            venv_name="${arg#*=}"
+            ;;
+        -p=*|--python=*)
+            python_version="${arg#*=}"
+            ;;
+        *)
+            # Skip unknown option
+            ;;
+    esac
+    shift
+done
+
+
+# Check if name of venv has been specified
+if [ -z "$venv_name" ]; then
+    echo "ERROR: Name a new venv has not been specified." >&2
+    echo "Use '-h' to get help." >&2
+    exit 1
+fi
+
+# Check if venv with specified name exists already
+# TODO: check if venv name exists.
+
+# check if python version has been specified correctly, if used '-p|--python' option
+# TODO: check if python version has been specified correctly
+
+
+echo "Creating $venv_name with python=$python_version"
+
+conda create --name ${venv_name} python=${python_version} pip=18.1 ipykernel
+
+source activate $venv_name
+
+python -m ipykernel install --user --name ${venv_name} --display-name ${venv_name}
+
+source deactivate $venv_name

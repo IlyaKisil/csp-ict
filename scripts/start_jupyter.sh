@@ -1,44 +1,61 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-usage()
-{
+set -e
+
+function help() {
+
+local _FILE_NAME
+_FILE_NAME=`basename $0`
+
 echo "*****************************************************"
-cat << EOF
-usage: $0 [-h] [-p port]
-This script starts a jupyter lab.
+cat << HELP_USAGE
+USAGE: $_FILE_NAME [-h|--help] [-p=|--port=<port>]
+
+This script starts a Jupyter Lab.
+
 TYPICAL USE:
-	$0
-	This will start a jupyter lab with automatic selection of the port
+	$_FILE_NAME
+	$_FILE_NAME -p=8000
+	$_FILE_NAME --port=8000
+
 BASIC OPTIONS:
-   -h			Show this message
-   -p [port]	Use port for starting/connecting to, Default is '8888'
+    -h|--help
+        Show this message.
+
+    -p=|--port=<port>
+    	Use port for starting/connecting to. Default is '8888'.
+
+
 By Ilya Kisil <ilyakisil@gmail.com>
-EOF
+HELP_USAGE
 echo "*****************************************************"
 }
 
 
-use_venv=0
+# Default value for variables
 port="8888"
-while getopts ":p:h" OPTION
-do
-    case $OPTION in
-        h)
-            usage
+
+
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            help
             exit
             ;;
-		p)
-			port="${OPTARG:r}"
-			;;
-        \?)
-			echo "Invalid option: -$OPTARG" >&2
-            usage
-            exit 1
+        -p=*|--port=*)
+            port="${arg#*=}"
             ;;
-     esac
+        *)
+            # Skip unknown option
+            ;;
+    esac
+    shift
 done
 
 
 printf "Starting Jupyter Lab for remote use\n"
 # Locally define $SHELL, so that terminals opened in JupyterLab would use zsh
 env SHELL="`which zsh`" jupyter lab --no-browser --port="${port}"
+
+# TODO: need some sort of convention for port selection for remote users
