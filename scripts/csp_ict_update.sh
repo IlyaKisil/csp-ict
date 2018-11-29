@@ -57,7 +57,13 @@ if [ -z ${file_name} ]; then
     exit
 fi
 
-UPDATE_FILE_PATH=/hdd/csp-ict/admin/ee-ik1614lx/update/${file_name}.sh
+# This variable should be correctly specified in the ~/.zshrc
+if [ -z $EE_IK1614LX_UPDATE_HOME ]; then
+    echo "ERROR: Missing some required environment variables." >&2
+    exit
+fi
+
+UPDATE_FILE_PATH=${EE_IK1614LX_UPDATE_HOME}/${file_name}.sh
 
 if [ ! -f ${UPDATE_FILE_PATH} ]; then
     echo "ERROR: Requested update file does not exist." >&2
@@ -65,5 +71,5 @@ if [ ! -f ${UPDATE_FILE_PATH} ]; then
     exit
 fi
 
-echo "Applying update from $UPDATE_FILE_PATH"
+echo "INFO: Applying update from $UPDATE_FILE_PATH"
 source ${UPDATE_FILE_PATH}

@@ -27,13 +27,6 @@ plugins=(
   tmux
 )
 
-### Set some custom environmental variables for user convenience.
-export DATASETS_SSD="/home/datasets"
-export DATASETS_HDD="/hdd/datasets"
-export CSP_ICT_HOME="/hdd/csp-ict"
-export TEMP_DIR="/hdd/tmp/${USER}"
-export LOG_DIR="/hdd/log/${USER}"
-
 # Configurations for nodejs version manager (nvm)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

@@ -23,14 +23,14 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
-if [ -z $EE_IK1614LX_SETUP_HOME ] || [ -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $CSP_ICT_HOME ]; then
     echo "`ERROR $_FILE_NAME` Missing some required variables."
     error_exit
 fi
 
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 USER_BIN_HOME="${USER_HOME}/bin"
-DEFAULT_BIN_SCRIPTS="${EE_IK1614LX_SETUP_HOME}/default_user_bin_scripts.txt"
+DEFAULT_BIN_SCRIPTS="${EE_IK1614LX_DEFAULTS_HOME}/default_user_bin_scripts.txt"
 
 echo "`INFO $_FILE_NAME` Configuring convenience scripts in [${USER_BIN_HOME}]."
 

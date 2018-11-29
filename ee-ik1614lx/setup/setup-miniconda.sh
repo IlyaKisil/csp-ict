@@ -23,7 +23,7 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
-if [ -z $EE_IK1614LX_SETUP_HOME ] || [ -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $CSP_ICT_HOME ]; then
     echo "`ERROR $_FILE_NAME` Missing some required variables."
     error_exit
 fi
@@ -31,23 +31,14 @@ fi
 
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 
-NVM_INSTALL_HOME="${USER_HOME}/.nvm"
-NODEJS_VERSION=`cat "${EE_IK1614LX_SETUP_HOME}/default_nodejs_version.txt"`
+ANACONDA_INSTALL_HOME="${USER_HOME}/Miniconda3"
+DEFAULT_VENV_REQUIREMENTS="${EE_IK1614LX_DEFAULTS_HOME}/default_venv_requirements.txt"
 
+echo "`INFO $_FILE_NAME` Configuring local installation of miniconda in [${ANACONDA_INSTALL_HOME}]."
+bash $CSP_ICT_HOME/software/miniconda/install.sh -b -p ${ANACONDA_INSTALL_HOME}
 
-echo "`INFO $_FILE_NAME` Configuring local installation of nodejs in [${NVM_INSTALL_HOME}]"
-
-
-echo "`INFO $_FILE_NAME` Installing NodeJS Version Manager (NVM)"
-
-if [[ ! -d $NVM_INSTALL_HOME/ ]]; then
-    mkdir $NVM_INSTALL_HOME
-fi
-env NVM_DIR="${NVM_INSTALL_HOME}" PROFILE="/dev/null" bash $CSP_ICT_HOME/software/nvm/install.sh
-
-
-echo "`INFO $_FILE_NAME` Installing NodeJS ${NODEJS_VERSION} with NVM"
-source $NVM_INSTALL_HOME/nvm.sh
-nvm install $NODEJS_VERSION
-
+echo "`INFO $_FILE_NAME` Installing additional packages required by default."
+${ANACONDA_INSTALL_HOME}/bin/conda install --file $DEFAULT_VENV_REQUIREMENTS \
+                                           --yes \
+                                           --quiet
 
