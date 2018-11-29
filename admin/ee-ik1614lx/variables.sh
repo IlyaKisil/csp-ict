@@ -2,6 +2,8 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
+set -e
+
 CSP_ICT_HOME="/hdd/csp-ict"
 
 EE_IK1614LX_SETUP_HOME="${CSP_ICT_HOME}/admin/ee-ik1614lx"

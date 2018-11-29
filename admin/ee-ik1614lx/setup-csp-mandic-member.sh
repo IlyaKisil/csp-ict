@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-# This script is called at the user login by /etc/profile.d/setup-csp-mandic-member.sh
+# This script is called at the USER login by /etc/profile.d/setup-csp-mandic-member.sh
 
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
+set -e
 
 ###--- Source convenience variables and utility functions ---###
 source /hdd/csp-ict/admin/ee-ik1614lx/variables.sh

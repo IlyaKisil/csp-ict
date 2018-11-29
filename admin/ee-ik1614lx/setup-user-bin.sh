@@ -2,10 +2,21 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
+set -e
 
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
-USER_NAME=$1
+if [ -z $1 ] ; then
+    USER_NAME=$USER
+else
+    USER_NAME=$1
+fi
+
+if [ -z $USER_NAME ] ; then
+    echo "`ERROR $_FILE_NAME` Don't known for which user this setup should be performed, cannot continue."
+    error_exit
+fi
+
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 USER_BIN_HOME="${USER_HOME}/bin"
 DEFAULT_BIN_SCRIPTS="${EE_IK1614LX_SETUP_HOME}/default_user_bin_scripts.txt"
@@ -22,7 +33,7 @@ while read -r line || [[ -n "$line" ]]; do
 
     # Skip empty lines if they exist
     [ -z "$line" ] && continue
-    
+
 done < "$DEFAULT_BIN_SCRIPTS"
 
 cp $CSP_ICT_HOME/scripts/README.md ${USER_BIN_HOME}/README.md

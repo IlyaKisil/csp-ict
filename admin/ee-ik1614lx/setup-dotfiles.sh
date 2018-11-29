@@ -2,7 +2,7 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
-
+set -e
 
 
 manual(){
@@ -30,9 +30,19 @@ echo "====================================================="
 ###--------   Default values   --------###
 ##########################################
 
-USER_NAME=$1
-
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
+
+if [ -z $1 ] ; then
+    USER_NAME=$USER
+else
+    USER_NAME=$1
+fi
+
+if [ -z $USER_NAME ] ; then
+    echo "`ERROR $_FILE_NAME` Don't known for which user this setup should be performed, cannot continue."
+    error_exit
+fi
+
 DATE=`date '+%Y-%m-%d'`
 TIME=`date '+%H-%M-%S'`
 
@@ -202,6 +212,7 @@ if echo "$answer" | grep -iq "^y" ;then
 else
     echo -e "\nQuitting, nothing was changed `red ":-("`\n"
     exit 0
+    #    TODO: check if 'exit 0' works correctly when 'set -e' is used
 fi
 
 backup_config

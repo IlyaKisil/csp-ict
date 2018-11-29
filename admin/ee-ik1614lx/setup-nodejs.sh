@@ -2,10 +2,21 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
+set -e
+
 _FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
+if [ -z $1 ] ; then
+    USER_NAME=$USER
+else
+    USER_NAME=$1
+fi
 
-USER_NAME=$1
+if [ -z $USER_NAME ] ; then
+    echo "`ERROR $_FILE_NAME` Don't known for which user this setup should be performed, cannot continue."
+    error_exit
+fi
+
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 
 NVM_INSTALL_HOME="${USER_HOME}/.nvm"

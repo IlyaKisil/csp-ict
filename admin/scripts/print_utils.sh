@@ -2,6 +2,7 @@
 
 # Author: Ilya Kisil <ilyakisil@gmail.com>
 
+set -e
 
 ##########################################
 ###--------   Default values   --------###
@@ -51,4 +52,5 @@ function error_exit(){
     printf "Enter [y] to exit: "
     answer=$( while ! head -c 1 | grep -i '[y]' ;do true ;done )
     exit 0
+#    TODO: check if 'exit 0' works correctly when 'set -e' is used
 }
