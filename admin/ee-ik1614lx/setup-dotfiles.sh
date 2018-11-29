@@ -8,7 +8,7 @@ set -e
 manual(){
 echo "====================================================="
 cat << EOF
-usage: `basename $0` user_name [-h?]
+usage: `basename $0` user_name [-h]
 
 Setup dotfiles for the USER in the home directory specified
 in the /etc/passwd
@@ -48,6 +48,12 @@ if [ $USER_NAME == "ik1614" ] ; then
     echo "`ERROR $_FILE_NAME` Can not perform setup for [ik1614]"
     error_exit
 fi
+
+if [ -z $CSP_ICT_HOME ]; then
+    echo "`ERROR $_FILE_NAME` Missing some required variables."
+    error_exit
+fi
+
 
 DATE=`date '+%Y-%m-%d'`
 TIME=`date '+%H-%M-%S'`

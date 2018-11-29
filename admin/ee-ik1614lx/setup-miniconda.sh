@@ -23,6 +23,12 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
+if [ -z $EE_IK1614LX_SETUP_HOME || -z $CSP_ICT_HOME ]; then
+    echo "`ERROR $_FILE_NAME` Missing some required variables."
+    error_exit
+fi
+
+
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 
 ANACONDA_INSTALL_HOME="${USER_HOME}/Miniconda3"
