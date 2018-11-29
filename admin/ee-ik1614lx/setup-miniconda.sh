@@ -17,6 +17,12 @@ if [ -z $USER_NAME ] ; then
     error_exit
 fi
 
+# This user (ik1614) MUST specify for which user this setup should be performed
+if [ $USER_NAME == "ik1614" ] ; then
+    echo "`ERROR $_FILE_NAME` Can not perform setup for [ik1614]"
+    error_exit
+fi
+
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
 
 ANACONDA_INSTALL_HOME="${USER_HOME}/Miniconda3"
