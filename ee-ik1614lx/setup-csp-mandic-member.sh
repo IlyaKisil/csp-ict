@@ -104,7 +104,7 @@ if [ -e ${SSH_USER_HOME}/${__SETUP_SUCCESS__} ]; then
     fi
 else
     ###--- Perform full setup and write log ---###
-    full_setup | tee $LOG_DIR/$LOG_FILE
+    full_setup |& tee $LOG_DIR/$LOG_FILE
 
     echo ""
     echo "`INFO $__FILE_NAME__` Log saved in ${LOG_DIR}/${LOG_FILE}" | tee -a ${SSH_USER_HOME}/${__SETUP_SUCCESS__}
