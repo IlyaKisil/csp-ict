@@ -7,20 +7,21 @@ function help() {
 local _FILE_NAME
 _FILE_NAME=`basename $0`
 
-echo "*****************************************************"
 cat << HELP_USAGE
-USAGE: $_FILE_NAME [-h|--help] [-n=|--name=<venv_name>] [-p=|--python=<version>]
 
-This script creates virtual environment and associated
-ipykernel with Miniconda.
+Description:
+    This script creates virtual environment and associated
+    ipykernel with Miniconda.
 
-TYPICAL USE:
+Usage: $_FILE_NAME [-h|--help] [-n=|--name=<venv_name>] [-p=|--python=<version>]
+
+Examples:
     $_FILE_NAME -n=my_venv_name
     $_FILE_NAME -n=my_venv_name -p=3.6
     $_FILE_NAME --name=my_venv_name
     $_FILE_NAME --name=my_venv_name --python=3.5
 
-BASIC OPTIONS:
+Options:
     -h|--help
         Show this message.
 
@@ -30,10 +31,12 @@ BASIC OPTIONS:
     -p=|--python=<version>
         Version of python interpreter. Default is '3.6.5'.
 
+Author:
+    Ilya Kisil <ilyakisil@gmail.com>
 
-By Ilya Kisil <ilyakisil@gmail.com>
+Report bugs to ilyakisil@gmail.com.
+
 HELP_USAGE
-echo "*****************************************************"
 }
 
 

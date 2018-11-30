@@ -7,28 +7,31 @@ function help() {
 local _FILE_NAME
 _FILE_NAME=`basename $0`
 
-echo "*****************************************************"
 cat << HELP_USAGE
-USAGE: $_FILE_NAME [-h|--help] [-p=|--port=<port>]
 
-This script starts a Jupyter Lab.
+Description:
+    This script starts a Jupyter Lab.
 
-TYPICAL USE:
+Usage: $_FILE_NAME [-h|--help] [-p=|--port=<port>]
+
+Examples:
 	$_FILE_NAME
 	$_FILE_NAME -p=8000
 	$_FILE_NAME --port=8000
 
-BASIC OPTIONS:
+Options:
     -h|--help
         Show this message.
 
     -p=|--port=<port>
     	Use port for starting/connecting to. Default is '8888'.
 
+Author:
+    Ilya Kisil <ilyakisil@gmail.com>
 
-By Ilya Kisil <ilyakisil@gmail.com>
+Report bugs to ilyakisil@gmail.com.
+
 HELP_USAGE
-echo "*****************************************************"
 }
 
 

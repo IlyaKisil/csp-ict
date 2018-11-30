@@ -7,28 +7,31 @@ function help() {
 local _FILE_NAME
 _FILE_NAME=`basename $0`
 
-echo "*****************************************************"
 cat << HELP_USAGE
-USAGE: $_FILE_NAME [-h|--help] [-f=|--file=<file_name>]
 
-This script can be used for applying future updates to the
-overall configuration.
+Description:
+    This script can be used for applying future updates to the
+    overall configuration.
 
-TYPICAL USE:
+Usage: $_FILE_NAME [-h|--help] [-f=|--file=<file_name>]
+
+Examples:
     $_FILE_NAME -f=my_value
     $_FILE_NAME --file_name=my_value
     
-BASIC OPTIONS:
+Options:
     -h|--help
         Show this message.
 
     -f=|--file=<file_name>
         Name of the source file to be executed.
 
+Author:
+    Ilya Kisil <ilyakisil@gmail.com>
 
-By Ilya Kisil <ilyakisil@gmail.com>
+Report bugs to ilyakisil@gmail.com.
+
 HELP_USAGE
-echo "*****************************************************"
 }
 
 # Default value for variables

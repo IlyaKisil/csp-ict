@@ -7,20 +7,21 @@ function help() {
 local _FILE_NAME
 _FILE_NAME=`basename $0`
 
-echo "*****************************************************"
 cat << HELP_USAGE
-USAGE: $_FILE_NAME [-h|--help] [-a=|--author=<AUTHOR>] [-r|--remove-bak]
+
+Description:
+    Generate inplace TOC for Markdown files. Based on 'gh-md-toc'
+
+Usage: $_FILE_NAME [-h|--help] [-a=|--author=<AUTHOR>] [-r|--remove-bak]
     [-f=|--file=<FILE_NAME>] [-s=|--sys-prefix=<PATH>]
 
-Generate inplace TOC for README.md files. Based on 'gh-md-toc'
-
-TYPICAL USE:
+Examples:
     $_FILE_NAME --remove-bak
     $_FILE_NAME --author="My Name"
     $_FILE_NAME --file="My_readme_file.md"
     $_FILE_NAME --file="My_readme_file.md" --sys-prefix="/path/to/dir/with/my_readme_file"
 
-BASIC OPTIONS:
+Options:
     -h|--help
         Show this message.
 
@@ -42,10 +43,12 @@ BASIC OPTIONS:
         By default these files are saved in .gh-md-toc.bak in
         current directory (auto created if it does not exist).
 
+Author:
+    Ilya Kisil <ilyakisil@gmail.com>
 
-By Ilya Kisil <ilyakisil@gmail.com>
+Report bugs to ilyakisil@gmail.com.
+
 HELP_USAGE
-echo "*****************************************************"
 }
 
 ### Default value for variables
