@@ -35,7 +35,13 @@ HELP_USAGE
 }
 
 # Default value for variables
-file_name="dummy_update.sh"
+update_name="dummy_update"
+
+DATE=`date '+%Y-%m-%d'`
+TIME=`date '+%H-%M-%S'`
+back_up_home=$HOME/.csp_ict_update.bak
+back_up_dir=${back_up_home}/${DATE}_${TIME}_${update_name}
+log_dir=${back_up_dir}/log
 
 # Parse arguments
 for arg in "$@"; do
@@ -45,7 +51,7 @@ for arg in "$@"; do
             exit
             ;;
         -f=*|--file=*)
-            file_name="${arg#*=}"
+            update_name="${arg#*=}"
             ;;
         *)
             # Skip unknown options
@@ -54,7 +60,7 @@ for arg in "$@"; do
     shift
 done
 
-if [ -z ${file_name} ]; then
+if [ -z ${update_name} ]; then
     echo "ERROR: File name has not been specified" >&2
     echo "Use '-h' to get help." >&2
     exit
@@ -66,7 +72,7 @@ if [ -z $EE_IK1614LX_UPDATE_HOME ]; then
     exit
 fi
 
-UPDATE_FILE_PATH=${EE_IK1614LX_UPDATE_HOME}/${file_name}.sh
+UPDATE_FILE_PATH=${EE_IK1614LX_UPDATE_HOME}/${update_name}.sh
 
 if [ ! -f ${UPDATE_FILE_PATH} ]; then
     echo "ERROR: Requested update file does not exist." >&2

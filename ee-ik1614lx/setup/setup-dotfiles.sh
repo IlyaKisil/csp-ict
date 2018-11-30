@@ -60,8 +60,8 @@ TIME=`date '+%H-%M-%S'`
 
 USER_EMAIL="${USER_NAME}@ic.ac.uk"
 USER_HOME="$(echo `getent passwd ${USER_NAME}` | awk -F: '{ print $6 }')"
-BACKUP_HOME="${USER_HOME}/.config_bak"
-BACKUP_DIR="${BACKUP_HOME}/csp_dotfiles_${DATE}_${TIME}"
+BACKUP_HOME="${USER_HOME}/.csp_ict_update.bak"
+BACKUP_DIR="${BACKUP_HOME}/dotfiles/${DATE}_${TIME}"
 
 OS=`uname`
 declare -a CONFIG_FILES=(".gitconfig"
@@ -118,7 +118,7 @@ show_outline(){
 backup_config(){
     printf "\n`INFO $_FILE_NAME` Backing up an existing configuration.\n"
 
-    mkdir $BACKUP_DIR
+    mkdir -p $BACKUP_DIR
     README="$BACKUP_DIR/README.md"
 
     printf "Backup of configuration existed on $DATE at $TIME:\n\n" > $README
