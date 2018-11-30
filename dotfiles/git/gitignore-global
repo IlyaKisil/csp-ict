@@ -18,6 +18,8 @@ test_[0-9]*
 .coveragerc-dev
 test_feature/
 
+# Backup directory for customised behaviour of 'gh-md-toc'
+.gh-md-toc.bak/
 
 
 #################################################
@@ -26,8 +28,8 @@ test_feature/
 # https://github.com/ekalinin/github-markdown-toc
 #
 #################################################
-*README.md.orig.*
-*README.md.toc.*
+*.md.orig.*
+*.md.toc.*
 
 
 

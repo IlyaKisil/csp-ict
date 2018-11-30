@@ -1,3 +1,5 @@
 create_venv.sh
 start_jupyter.sh
 csp_ict_update.sh
+gh-md-toc
+add_toc.sh

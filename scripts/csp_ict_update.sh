@@ -32,7 +32,7 @@ echo "*****************************************************"
 }
 
 # Default value for variables
-file_name=""
+file_name="dummy_update.sh"
 
 # Parse arguments
 for arg in "$@"; do
