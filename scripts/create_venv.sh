@@ -82,7 +82,7 @@ fi
 
 echo "Creating $venv_name with python=$python_version"
 
-conda create --name ${venv_name} python=${python_version} pip=18.1 ipykernel
+conda create --name ${venv_name} python=${python_version} pip ipykernel
 
 source activate $venv_name
 
