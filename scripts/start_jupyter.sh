@@ -25,7 +25,7 @@ Options:
 
     -p=|--port=<port>
     	Use port for starting/connecting to.
-    	It is advised to use value '>=9000'.
+    	It is advised to use value '>=10000'.
 
     	Defaults to the value of \$JUPYTER_LAB_PORT
     	or '8888' if this env variable doesn't exist.

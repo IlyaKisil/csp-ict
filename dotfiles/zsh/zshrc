@@ -65,7 +65,6 @@ alias gl='cd ~/GitLab'
 ### PYTHON ###
 alias sa='source activate'
 alias sd='source deactivate'
-alias jn='jupyter notebook --no-browser'
 
 
 # Source main file (Must have and must be at the very end)

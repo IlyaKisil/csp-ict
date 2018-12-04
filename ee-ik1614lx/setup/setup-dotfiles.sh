@@ -49,7 +49,7 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
-if [ -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $CSP_ICT_HOME ]; then
     echo "`ERROR $_FILE_NAME` Missing some required variables."
     error_exit
 fi
@@ -190,9 +190,6 @@ tmux_bootstrap(){
 }
 
 zsh_bootstrap(){
-    # TODO: infer jl_port for the user
-    local jl_port
-    jl_port="8888"
     printf "\n`INFO $_FILE_NAME` Bootstrap of `green "ZSH"` config files.\n"
 
     printf "\t 1) Cloning `green "oh-my-zsh"`\n"
@@ -207,7 +204,19 @@ zsh_bootstrap(){
 
     printf "\t 3) Creating local configuration for the zsh in `green ".zshrc-local"`\n"
     cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx $USER_HOME/.zshrc-local
+
+    # Set default ports for Jupyter Lab and Jupyter Notebook
+    local jupyter_ports_file
+    local jl_port
+    local jn_port
+    jupyter_ports_file="${EE_IK1614LX_DEFAULTS_HOME}/default_jupyter_ports.txt"
+    jl_port=`cat $jupyter_ports_file | grep $USER_NAME | awk -F: '{ print $2 }'`
+    if [ -z ${jl_port} ]; then
+        jl_port="8888"
+    fi
+    jn_port=$(( $jl_port + 1 ))
     sed -i "s|__JUPYTER_LAB_PORT__|$jl_port|g" $USER_HOME/.zshrc-local
+    sed -i "s|__JUPYTER_NOTEBOOK_PORT__|$jn_port|g" $USER_HOME/.zshrc-local
 
     printf "\t 4) Copying custom theme and plugins for oh-my-zsh in `green "~/.config/zsh/"`\n"
     cp -r $CSP_ICT_HOME/dotfiles/zsh/custom $USER_HOME/.config/zsh/
