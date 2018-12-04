@@ -35,13 +35,10 @@ HELP_USAGE
 }
 
 # Default value for variables
-update_name="dummy_update"
-
 DATE=`date '+%Y-%m-%d'`
 TIME=`date '+%H-%M-%S'`
-back_up_home=$HOME/.csp_ict_update.bak
-back_up_dir=${back_up_home}/${DATE}_${TIME}_${update_name}
-log_dir=${back_up_dir}/log
+BACKUP_HOME=$HOME/.csp_ict_update.bak
+update_name="dummy_update"
 
 # Parse arguments
 for arg in "$@"; do
@@ -60,6 +57,12 @@ for arg in "$@"; do
     shift
 done
 
+# Define new variables with respect to the parsed arguments
+backup_dir=${BACKUP_HOME}/${DATE}_${TIME}_${update_name}
+log_dir=${backup_dir}/log
+
+
+#--------          MAIN          --------#
 if [ -z ${update_name} ]; then
     echo "ERROR: File name has not been specified" >&2
     echo "Use '-h' to get help." >&2
@@ -67,7 +70,7 @@ if [ -z ${update_name} ]; then
 fi
 
 # This variable should be correctly specified in the ~/.zshrc
-if [ -z $EE_IK1614LX_UPDATE_HOME ]; then
+if [ -z $EE_IK1614LX_UPDATE_HOME ] || [ -z $CSP_ICT_HOME ] ; then
     echo "ERROR: Missing some required environment variables." >&2
     exit
 fi
@@ -81,4 +84,4 @@ if [ ! -f ${UPDATE_FILE_PATH} ]; then
 fi
 
 echo "INFO: Applying update from $UPDATE_FILE_PATH"
-source ${UPDATE_FILE_PATH}
+source ${UPDATE_FILE_PATH} --bak=$backup_dir --log=$log_dir --home=$HOME

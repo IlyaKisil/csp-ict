@@ -59,7 +59,6 @@ export BROWSER="google-chrome"
 
 ### GENERAL ###
 alias clc='clear'
-alias add='git add --all;git status'
 alias gh='cd ~/GitHub'
 alias gl='cd ~/GitLab'
 
@@ -67,9 +66,7 @@ alias gl='cd ~/GitLab'
 alias sa='source activate'
 alias sd='source deactivate'
 alias jn='jupyter notebook --no-browser'
-alias jl='start_jupyter.sh'
 
 
-
-# Source main file (Must have)
+# Source main file (Must have and must be at the very end)
 source $ZSH/oh-my-zsh.sh

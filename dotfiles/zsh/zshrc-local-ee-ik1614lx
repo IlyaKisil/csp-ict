@@ -10,7 +10,7 @@ ZSH_THEME="agnoster"
 
 
 ### Set env variables related to CUDA
-CUDA_HOME=/usr/local/cuda-10.0/bin
+CUDA_HOME=/usr/local/cuda/bin
 CUDA_LIB64_HOME=/usr/local/cuda/lib64
 CUDA_CUPTI_LIB64_HOME=/usr/local/cuda/extras/CUPTI/lib64
 
@@ -20,19 +20,27 @@ ANACONDA_HOME=$HOME/Miniconda3/bin
 
 
 ### Export some custom environmental variables for user convenience.
-export LOG_DIR="/hdd/log/${USER}"
-export TEMP_DIR="/hdd/tmp/${USER}"
+export USER_LOG_DIR="/hdd/log/${USER}"
+export USER_TMP_DIR="/hdd/tmp/${USER}"
 export DATASETS_SSD="/home/datasets"
 export DATASETS_HDD="/hdd/datasets"
 export CSP_ICT_HOME="/hdd/csp-ict"
 export EE_IK1614LX_SETUP_HOME="${CSP_ICT_HOME}/ee-ik1614lx/setup"
 export EE_IK1614LX_UPDATE_HOME="${CSP_ICT_HOME}/ee-ik1614lx/update"
 export EE_IK1614LX_DEFAULTS_HOME="${CSP_ICT_HOME}/ee-ik1614lx/defaults"
+export JUPYTER_LAB_PORT=__JUPYTER_LAB_PORT__
 
 
 #######################################
 #########       ALIASES       #########
 #######################################
+
+### GENERAL ###
+
+
+### PYTHON ###
+alias jl='start_jupyter.sh'
+
 
 ### REMOTE CONTROL ###
 

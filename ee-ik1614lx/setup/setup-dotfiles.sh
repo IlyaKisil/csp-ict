@@ -178,7 +178,7 @@ tmux_bootstrap(){
     cp $CSP_ICT_HOME/dotfiles/tmux/tmux.conf $USER_HOME/.tmux.conf
 
     printf "\t 2) Creating local configuration for tmux in `green ".tmux-local.conf"`\n"
-    cp $CSP_ICT_HOME/dotfiles/tmux/tmux-local.conf $USER_HOME/.tmux-local.conf
+    cp $CSP_ICT_HOME/dotfiles/tmux/tmux-local-ee-ik1614lx.conf $USER_HOME/.tmux-local.conf
 
     printf "\t 3) Cloning `green "Tmux plugin manager"`\n"
     if [[ -d $USER_HOME/.tmux/plugins/tpm/ ]]; then
@@ -190,6 +190,9 @@ tmux_bootstrap(){
 }
 
 zsh_bootstrap(){
+    # TODO: infer jl_port for the user
+    local jl_port
+    jl_port="8888"
     printf "\n`INFO $_FILE_NAME` Bootstrap of `green "ZSH"` config files.\n"
 
     printf "\t 1) Cloning `green "oh-my-zsh"`\n"
@@ -203,7 +206,8 @@ zsh_bootstrap(){
     cp $CSP_ICT_HOME/dotfiles/zsh/zshrc $USER_HOME/.zshrc
 
     printf "\t 3) Creating local configuration for the zsh in `green ".zshrc-local"`\n"
-    cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local $USER_HOME/.zshrc-local
+    cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx $USER_HOME/.zshrc-local
+    sed -i "s|__JUPYTER_LAB_PORT__|$jl_port|g" $USER_HOME/.zshrc-local
 
     printf "\t 4) Copying custom theme and plugins for oh-my-zsh in `green "~/.config/zsh/"`\n"
     cp -r $CSP_ICT_HOME/dotfiles/zsh/custom $USER_HOME/.config/zsh/
