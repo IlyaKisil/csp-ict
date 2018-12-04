@@ -15,24 +15,19 @@ Description:
 
     For more details, see associated info in README.md
 
-Usage: $_FILE_NAME [-h|--help] [-b=|--bak=<BACKUP_DIR>] [-l=|--log=<LOG_DIR>]
-    [-h=|--home=<HOME_DIR>]
+Notes:
+    Originally, \$back_up_dir was defined in the original 'csp_ict_update.sh' script.
+    But this update modifies 'csp_ict_update.sh' and this variable can no longer be
+    used.
+
+Usage: $_FILE_NAME [-h|--help]
 
 Examples:
-    $_FILE_NAME --bak=/my/backup/dir --log=my/log/dir --home=/my/home/dir
-    
+    $_FILE_NAME
+
 Options:
     -h|--help
         Show this message.
-
-    -b=|--bak=<BACKUP_DIR>
-        Backup directory for files that are affected by this update
-
-    -l=|--log=<LOG_DIR>
-        Log directory for the execution of this update
-
-    -h=|--home=<HOME_DIR>
-        Log directory for the execution of this update
 
 Author:
     Ilya Kisil <ilyakisil@gmail.com>
@@ -46,9 +41,6 @@ HELP_USAGE
 
 
 # Default values for variables
-BACKUP_DIR=""
-LOG_DIR=""
-USER_HOME=""
 declare -a AFFECTED_FILES=("~/.zshrc"
                             "~/.zshrc-local"
                             "~/.tmux-local.conf"
@@ -63,15 +55,6 @@ for arg in "$@"; do
             help
             exit
             ;;
-        -b=*|--bak=*)
-            BACKUP_DIR="${arg#*=}"
-            ;;
-        -l=*|--log=*)
-            LOG_DIR="${arg#*=}"
-            ;;
-        -h=*|--home=*)
-            USER_HOME="${arg#*=}"
-            ;;
         *)
             # Skip unknown option
             ;;
@@ -83,13 +66,8 @@ done
 
 
 #--------          MAIN (preparation)          --------#
-if [ -z ${LOG_DIR} ] || [ -z ${BACKUP_DIR} ] || [ -z ${USER_HOME} ]; then
-    echo "ERROR: User's [home], [log] or [backup] directories have not been specified. Cannot proceed." >&2
-    exit 1
-fi
-
 # Infer user name from user home
-USER_NAME="$(echo ${USER_HOME} | awk -F/ '{ print $NF }')"
+USER_NAME="$(echo ${HOME} | awk -F/ '{ print $NF }')"
 
 if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $USER_NAME ] || [ -z $CSP_ICT_HOME ]; then
     echo "ERROR: Missing some required variables."  >&2
@@ -113,35 +91,35 @@ if echo "$answer" | grep -iq "^y" ;then
     exit 0
 fi
 
-mkdir -p $BACKUP_DIR
+mkdir -p $back_up_dir
 
-echo "Updating [${USER_HOME}/bin/csp_ict_update.sh]"
-mv ${USER_HOME}/bin/csp_ict_update.sh ${BACKUP_DIR}/csp_ict_update.sh
-cp $CSP_ICT_HOME/scripts/csp_ict_update.sh ${USER_HOME}/bin/csp_ict_update.sh
+echo "Updating [${HOME}/bin/csp_ict_update.sh]"
+mv ${HOME}/bin/csp_ict_update.sh ${back_up_dir}/csp_ict_update.sh
+cp $CSP_ICT_HOME/scripts/csp_ict_update.sh ${HOME}/bin/csp_ict_update.sh
 
-echo "Updating [${USER_HOME}/.tmux-local.conf]"
-mv ${USER_HOME}/.tmux-local.conf ${BACKUP_DIR}/.tmux-local.conf
-cp $CSP_ICT_HOME/dotfiles/tmux/tmux-local-ee-ik1614lx.conf ${USER_HOME}/.tmux-local.conf
+echo "Updating [${HOME}/.tmux-local.conf]"
+mv ${HOME}/.tmux-local.conf ${back_up_dir}/.tmux-local.conf
+cp $CSP_ICT_HOME/dotfiles/tmux/tmux-local-ee-ik1614lx.conf ${HOME}/.tmux-local.conf
 
-echo "Updating [${USER_HOME}/.zshrc]"
-mv ${USER_HOME}/.zshrc ${BACKUP_DIR}/.zshrc
-cp $CSP_ICT_HOME/dotfiles/zsh/zshrc ${USER_HOME}/.zshrc
+echo "Updating [${HOME}/.zshrc]"
+mv ${HOME}/.zshrc ${back_up_dir}/.zshrc
+cp $CSP_ICT_HOME/dotfiles/zsh/zshrc ${HOME}/.zshrc
 
-echo "Updating [${USER_HOME}/bin/start_jupyter.sh]"
-mv ${USER_HOME}/bin/start_jupyter.sh ${BACKUP_DIR}/start_jupyter.sh
-cp $CSP_ICT_HOME/scripts/start_jupyter.sh ${USER_HOME}/bin/start_jupyter.sh
+echo "Updating [${HOME}/bin/start_jupyter.sh]"
+mv ${HOME}/bin/start_jupyter.sh ${back_up_dir}/start_jupyter.sh
+cp $CSP_ICT_HOME/scripts/start_jupyter.sh ${HOME}/bin/start_jupyter.sh
 
-echo "Updating [${USER_HOME}/.zshrc-local]"
-mv ${USER_HOME}/.zshrc-local ${BACKUP_DIR}/.zshrc-local
-cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx ${USER_HOME}/.zshrc-local
+echo "Updating [${HOME}/.zshrc-local]"
+mv ${HOME}/.zshrc-local ${back_up_dir}/.zshrc-local
+cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx ${HOME}/.zshrc-local
 
-echo "Set default ports for Jupyter Lab and Notebook in [${USER_HOME}/.zshrc-local]"
+echo "Set default ports for Jupyter Lab and Notebook in [${HOME}/.zshrc-local]"
 JUPYTER_PORTS_FILE="${EE_IK1614LX_DEFAULTS_HOME}/default_jupyter_ports.txt"
 JL_PORT=`cat $JUPYTER_PORTS_FILE | grep $USER_NAME | awk -F: '{ print $2 }'`
 if [ -z ${JL_PORT} ]; then
     JL_PORT="8888"
 fi
 JN_PORT=$(( $JL_PORT + 1 ))
-sed -i "s|__JUPYTER_LAB_PORT__|$JL_PORT|g" $USER_HOME/.zshrc-local
-sed -i "s|__JUPYTER_NOTEBOOK_PORT__|$JN_PORT|g" $USER_HOME/.zshrc-local
+sed -i "s|__JUPYTER_LAB_PORT__|$JL_PORT|g" $HOME/.zshrc-local
+sed -i "s|__JUPYTER_NOTEBOOK_PORT__|$JN_PORT|g" $HOME/.zshrc-local
 
