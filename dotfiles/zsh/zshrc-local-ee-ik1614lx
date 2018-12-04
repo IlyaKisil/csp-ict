@@ -41,7 +41,7 @@ export JUPYTER_NOTEBOOK_PORT=__JUPYTER_NOTEBOOK_PORT__
 
 ### PYTHON ###
 alias jl='start_jupyter.sh'
-alias jn='jupyter notebook --no-browser --port=${JUPYTER_NOTEBOOK_PORT}'
+alias jn='start_jupyter.sh --notebook'
 
 
 ### REMOTE CONTROL ###
