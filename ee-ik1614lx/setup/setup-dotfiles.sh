@@ -6,7 +6,6 @@ set -e
 
 
 manual(){
-echo "====================================================="
 cat << EOF
 usage: `basename $0` user_name [-h]
 
@@ -22,8 +21,6 @@ By Ilya Kisil <ilyakisil@gmail.com>
 EOF
 
 show_outline
-
-echo "====================================================="
 }
 
 ##########################################
@@ -49,7 +46,7 @@ if [ $USER_NAME == "ik1614" ] ; then
     error_exit
 fi
 
-if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_HOME ] || [ -z $CSP_ICT_HOME ]; then
     echo "`ERROR $_FILE_NAME` Missing some required variables."
     error_exit
 fi
@@ -205,18 +202,26 @@ zsh_bootstrap(){
     printf "\t 3) Creating local configuration for the zsh in `green ".zshrc-local"`\n"
     cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx $USER_HOME/.zshrc-local
 
-    # Set default ports for Jupyter Lab and Jupyter Notebook
-    local jupyter_ports_file
+    # Set default ports for Jupyter Lab, Notebook and Tensor Board
+    local ALLOWED_USERS_INFO
+    local PORTS_INFO
     local jl_port
     local jn_port
-    jupyter_ports_file="${EE_IK1614LX_DEFAULTS_HOME}/default_jupyter_ports.txt"
-    jl_port=`cat $jupyter_ports_file | grep $USER_NAME | awk -F: '{ print $2 }'`
-    if [ -z ${jl_port} ]; then
+    local tf_board_port
+    ALLOWED_USERS_INFO="${EE_IK1614LX_HOME}/allowed_users_info.csv"
+    PORTS_INFO=`cat $ALLOWED_USERS_INFO | grep $USER_NAME`
+    jl_port="$(echo ${PORTS_INFO} | awk -F, '{ print $2 }')"
+    jn_port="$(echo ${PORTS_INFO} | awk -F, '{ print $3 }')"
+    tf_board_port="$(echo ${PORTS_INFO} | awk -F, '{ print $4 }')"
+    if [ -z ${jl_port} ] || [ -z ${jl_port} ] || [ -z ${jl_port} ]; then
         jl_port="8888"
+        jn_port=$(( $jl_port + 1 ))
+        tf_board_port=$(( $jn_port + 1 ))
+        echo "`WARNING $_FILE_NAME` Standard ports for Jupyter Lab, Notebook etc have not been configured correctly."
     fi
-    jn_port=$(( $jl_port + 1 ))
     sed -i "s|__JUPYTER_LAB_PORT__|$jl_port|g" $USER_HOME/.zshrc-local
     sed -i "s|__JUPYTER_NOTEBOOK_PORT__|$jn_port|g" $USER_HOME/.zshrc-local
+    sed -i "s|__TF_BOARD_PORT__|$tf_board_port|g" $USER_HOME/.zshrc-local
 
     printf "\t 4) Copying custom theme and plugins for oh-my-zsh in `green "~/.config/zsh/"`\n"
     cp -r $CSP_ICT_HOME/dotfiles/zsh/custom $USER_HOME/.config/zsh/
@@ -237,7 +242,6 @@ if echo "$answer" | grep -iq "^y" ;then
 else
     echo -e "\nQuitting, nothing was changed `red ":-("`\n"
     exit 0
-    #    TODO: check if 'exit 0' works correctly when 'set -e' is used
 fi
 
 backup_config

@@ -30,6 +30,7 @@ export EE_IK1614LX_UPDATE_HOME="${CSP_ICT_HOME}/ee-ik1614lx/update"
 export EE_IK1614LX_DEFAULTS_HOME="${CSP_ICT_HOME}/ee-ik1614lx/defaults"
 export JUPYTER_LAB_PORT=__JUPYTER_LAB_PORT__
 export JUPYTER_NOTEBOOK_PORT=__JUPYTER_NOTEBOOK_PORT__
+export TF_BOARD_PORT=__TF_BOARD_PORT__
 
 
 #######################################

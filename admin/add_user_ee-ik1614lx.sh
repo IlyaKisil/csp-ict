@@ -73,9 +73,16 @@ user_tmp_dir="/hdd/tmp/${user}"
 ###--------          MAIN          --------###
 ##############################################
 
+source /hdd/csp-ict/ee-ik1614lx/variables.sh
+
 if [[ $EUID -ne 0 ]]; then
    echo "ERROR: This script must be run as root" >&2
    exit 1
+fi
+
+if [ -z $EE_IK1614LX_HOME ]; then
+    echo "ERROR: Missing some required variables."
+    exit 1
 fi
 
 ### Check if user name has been specified
@@ -95,14 +102,13 @@ USER_UID="$(echo ${GETENTPASSWD} | awk -F: '{ print $3 }')"
 USER_GID="$(echo ${GETENTPASSWD} | awk -F: '{ print $4 }')"
 user_home="$(echo ${GETENTPASSWD} | awk -F: '{ print $6 }')"
 
-### Check if user has already been granted access
+### Check if user has already been granted access (If it is presented in the local /etc/passwd)
 if grep -q "${user}:[x*]:${USER_UID}:${USER_GID}:.*:${new_user_home}:" /etc/passwd; then
     echo "INFO: [${user}] have already been added to local '/etc/passwd'. Additional actions are not required."
     exit 0
 fi
 
-
-### Check if user has already been granted access
+### Check if user has already been granted access (By default, Imperial LDAP sets home directory to the /home/__user__)
 if [ $user_home != "/home/${user}" ]; then
     echo "ERROR: Unknown pattern for home directory for [${user}]." >&2
     echo "Expected [/home/${user}] but got [$user_home]." >&2
@@ -124,9 +130,11 @@ else
     exit 1
 fi
 
-### Add user to a group so he could ssh and access shared files # TODO: Do we need  to check whether user already in a group?
+### Add user to a group so he could ssh and access shared files
 usermod -a -G $group $user
 
+### Add user to a docker group since they don't have sudo privileges
+usermod -a -G docker $user
 
 ### Create associate directories for logs and temporary files
 if [ ! -d "$user_log_dir" ]; then
@@ -137,6 +145,19 @@ if [ ! -d "$user_tmp_dir" ]; then
     mkdir $user_tmp_dir
     chown $USER_UID:$USER_GID $user_tmp_dir
 fi
+
+### Define ports to be exposed (used) for the user
+ALLOWED_USERS_INFO=${EE_IK1614LX_HOME}/allowed_users_info.csv
+jl_port_last=`tail -1 $ALLOWED_USERS_INFO | awk -F, '{ print $2 }'`
+if [ -z ${jl_port_last} ]; then
+    jl_port="8888"
+    echo "WARNING: Standard ports for [$user] have not been configured correctly."
+else
+    jl_port=$(( $jl_port_last + 10 ))
+fi
+jn_port=$(( $jl_port + 1 ))
+tf_board_port=$(( $jn_port + 1 ))
+echo "${user},${jl_port},${jn_port},${tf_board_port}" >> $EE_IK1614LX_HOME/allowed_users_info.csv
 
 
 ### Initialise Trash bin for a user

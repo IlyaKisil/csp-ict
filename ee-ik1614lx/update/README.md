@@ -4,7 +4,10 @@ All update scripts support `-h|--help` option and adhere the following naming co
 update_YEAR_MONTH_DAY.sh
 ```
 where `YEAR_MONTH_DAY` specifies the release date of the update.
+
 > **NOTE:** `dummy_update.sh` is reserved for testing purposes.
+
+> **IMPORTANT:** It could be the case the update scripts would not work if there is a newer version of update script. If that is the case then it is better to look at the git log to search for the answers.
 
 
 ## List of all updates with short description

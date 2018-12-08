@@ -69,11 +69,11 @@ done
 # Infer user name from user home
 USER_NAME="$(echo ${HOME} | awk -F/ '{ print $NF }')"
 
-if [ -z $EE_IK1614LX_DEFAULTS_HOME ] || [ -z $USER_NAME ] || [ -z $CSP_ICT_HOME ]; then
+if [ -z $EE_IK1614LX_HOME ] || [ -z $USER_NAME ] || [ -z $CSP_ICT_HOME ]; then
     echo "ERROR: Missing some required variables."  >&2
     exit 1
 fi
-JUPYTER_PORTS_FILE="${EE_IK1614LX_DEFAULTS_HOME}/default_jupyter_ports.txt"
+JUPYTER_PORTS_FILE="${EE_IK1614LX_HOME}/allowed_users_info.csv"
 
 
 #--------          MAIN (execution)          --------#
@@ -114,8 +114,7 @@ mv ${HOME}/.zshrc-local ${back_up_dir}/.zshrc-local
 cp $CSP_ICT_HOME/dotfiles/zsh/zshrc-local-ee-ik1614lx ${HOME}/.zshrc-local
 
 echo "Set default ports for Jupyter Lab and Notebook in [${HOME}/.zshrc-local]"
-JUPYTER_PORTS_FILE="${EE_IK1614LX_DEFAULTS_HOME}/default_jupyter_ports.txt"
-JL_PORT=`cat $JUPYTER_PORTS_FILE | grep $USER_NAME | awk -F: '{ print $2 }'`
+JL_PORT=`cat $JUPYTER_PORTS_FILE | grep $USER_NAME | awk -F, '{ print $2 }'`
 if [ -z ${JL_PORT} ]; then
     JL_PORT="8888"
 fi
