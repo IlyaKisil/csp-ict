@@ -5,7 +5,7 @@ set -e
 function help() {
 
 local _FILE_NAME
-_FILE_NAME=`basename $0`
+_FILE_NAME=`basename ${BASH_SOURCE[0]}`
 
 cat << HELP_USAGE
 
@@ -52,7 +52,6 @@ HELP_USAGE
 }
 
 ### Default value for variables
-# TODO: If I want to make it universal, then prefix and file name variable need to be defined properly and be applied only to the *.md files
 sys_prefix=`pwd`
 md_file_name="README.md"
 author=`whoami`
@@ -107,7 +106,7 @@ fi
 
 
 ### Generate and append TOC
-bash  $HOME/GitHub/config-lib/scripts/gh-md-toc --insert $md_file;
+bash  gh-md-toc --insert $md_file;
 
 
 ### Move or delete auto generated files (Matched using wildcard)
