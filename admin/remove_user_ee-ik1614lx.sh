@@ -37,6 +37,12 @@ HELP_USAGE
 
 ### Default value for variables
 user=""
+# secondary groups to be removed from a user
+# 'csp-mandic': to revoke access to ssh and shared files
+# 'docker': to revoke use of docker without sudo privileges
+declare -a GROUP_LIST=("csp-mandic"
+                       "docker"
+                       )
 
 # Parse arguments
 for arg in "$@"; do
@@ -70,9 +76,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [ -z $EE_IK1614LX_HOME ]; then
-    echo "ERROR: Missing some required variables."
+    echo "ERROR: Missing some required variables." >&2
     exit 1
 fi
+ALLOWED_USERS_INFO=$EE_IK1614LX_HOME/allowed_users_info.csv
 
 ### Check if user name has been specified
 if [ -z "$user" ]; then
@@ -81,13 +88,43 @@ if [ -z "$user" ]; then
     exit 1
 fi
 
-### Remove user information from the local 'passwd'
+### Remove secondary groups from user.
+echo "INFO: Removing secondary groups from [$user]."
+for secondary_group in "${GROUP_LIST[@]}"
+do
+    if groups $user | grep &>/dev/null "\b${secondary_group}\b"; then
+        gpasswd -d $user $secondary_group
+    else
+        echo "WARNING: [$user] is not a member of [$secondary_group]."
+    fi
+done
 
-### Remove user from the 'csp-mandic' group so he would not be able to ssh and access shared files
-
-### Remove user from the 'docker' group
-
-### Remove user the allowed users file
+### Remove user the allowed users file. But keep it in the local '/etc/passwd'
+echo "INFO: Removing [$user] from a list of allowed users and the corresponding information."
+if ! grep -q "${user}," ${ALLOWED_USERS_INFO}; then
+    echo "WARNING: [${user}] is not present in the list of allowed users with additional information."
+else
+    # TODO: remove only the first match (don't really need it since user name is unique and we delete line only if there is exact match)
+    echo "INFO: Validate how file with users information will look after deleting [$user]."
+    echo ""
+    echo "=========== BEFORE DELETION ==========="
+    cat $ALLOWED_USERS_INFO
+    echo ""
+    echo "=========== AFTER DELETION ============"
+    # without '-i' option changes are outputted in STDERR
+    sed "/\b\(${user}\)\b/d" $ALLOWED_USERS_INFO
+    echo "======================================="
+    echo ""
+    printf "Is everything correct [y/n]? "
+    answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+    if echo "$answer" | grep -iq "^y" ;then
+        # -i makes this change inplace
+        sed -i "/\b\(${user}\)\b/d" $ALLOWED_USERS_INFO
+    else
+        echo "WARNING: Deletion has been canceled. Do it manually in:"
+        echo -e "\t ${ALLOWED_USERS_INFO}"
+    fi
+fi
 
 
 ### Remove Trash bin associated with a user
