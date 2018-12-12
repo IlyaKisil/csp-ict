@@ -39,12 +39,12 @@ source $HOME/.zshrc-local
 
 ### Set PATH
 # Include user's private bin
-export PATH=$HOME/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/bin${PATH:+:${PATH}}
+export PATH=$HOME/.local/bin${PATH:+:${PATH}}
 
 # The following HOME directories should be correctly
 # defined in the ~/.zshrc-local, which should be sourced beforehand.
-export PATH=$ANACONDA_HOME:$PATH
+export PATH=$ANACONDA_HOME${PATH:+:${PATH}}
 export PATH=$CUDA_HOME${PATH:+:${PATH}}
 
 export LD_LIBRARY_PATH=$CUDA_LIB64_HOME${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
