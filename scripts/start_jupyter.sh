@@ -44,13 +44,12 @@ HELP_USAGE
 }
 
 
-# Default value for variables
-if [ ! -z $JUPYTER_LAB_PORT ];then
-    port="${JUPYTER_LAB_PORT}"
-else
-    port="8888"
-fi
-start_type=0
+### Default value for variables
+# User interface for jupyter ('lab|notebook')
+UI="lab"
+
+# Exposed port on the local server
+default_port="8888"
 
 # Parse arguments
 for arg in "$@"; do
@@ -63,7 +62,7 @@ for arg in "$@"; do
             port="${arg#*=}"
             ;;
         -n|--notebook)
-            start_type=1
+            UI="notebook"
             ;;
         *)
             # Skip unknown option
@@ -72,25 +71,30 @@ for arg in "$@"; do
     shift
 done
 
+### Define new variables with respect to the parsed arguments
 
-if [[ ($start_type == 0) ]]; then
 
-	printf "Starting Jupyter Lab for remote use\n"
+##########################################
+#--------          MAIN          --------#
+##########################################
 
-    if [ ! -z $JUPYTER_LAB_PORT ];then
-        port="${JUPYTER_LAB_PORT}"
-    fi
-
-	# Locally define $SHELL, so that terminals opened in JupyterLab would use zsh
-    env SHELL="`which zsh`" jupyter lab --no-browser --port="${port}"
-
-elif [[ ($start_type == 1) ]]; then
-
-	printf "Starting Jupyter Notebook for remote use\n"
-
-	if [ ! -z $JUPYTER_NOTEBOOK_PORT ];then
-        port="${JUPYTER_NOTEBOOK_PORT}"
-    fi
-
-	jupyter notebook --no-browser --port=${port}
+# Use zsh as shell for terminals if it exists
+if [ ! -z "${SHELL##*zsh*}" ] && [ -x "$(command -v zsh)" ]; then
+    SHELL_PATH=`which zsh`
+else
+    SHELL_PATH=$SHELL
 fi
+
+# Infer which port to use based on ENV variables
+if [ -z $port ]; then
+    if [[ $UI == "lab" ]] && [ ! -z $JUPYTER_LAB_PORT ]; then
+        port=$JUPYTER_LAB_PORT
+    elif [[ $UI == "notebook" ]] && [ ! -z $JUPYTER_NOTEBOOK_PORT ]; then
+        port=$JUPYTER_NOTEBOOK_PORT
+    else
+        port=$default_port
+    fi
+fi
+
+printf "Starting Jupyter ${UI^} for remote use \n\n"
+env SHELL=$SHELL_PATH jupyter ${UI} --no-browser --port="${port}"
